@@ -1,0 +1,4 @@
+.venv
+.skill-scan-cache.json
+dist
+.agents
