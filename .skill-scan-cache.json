@@ -1,0 +1,146 @@
+{
+  "source": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice",
+  "skills": [
+    {
+      "kind": "skill",
+      "name": "qlty-review",
+      "description": "Read qlty smells.json and check.json from a target codebase and produce a refactor-focused REVIEW.md grouped by DRY / KISS / SOLID / GoF pattern opportunities. Use when the user says \"review the qlty results for <target>\", \"what does qlty say about <target>\", or after `qlty-setup` emits its handoff.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/qlty-review",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "wiki-ingest",
+      "description": "Use when running an ingest command to transform raw Markdown documentation into tiered Obsidian notes and WikiLinks under /wiki.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/wiki-ingest",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "mdvs",
+      "description": ">-",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/mdvs",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "semgrep-review",
+      "description": "Read a Semgrep results.json from a target codebase and produce a refactor-focused REVIEW.md grouped by DRY / KISS / SOLID / GoF pattern opportunities. Use when the user says \"review the Semgrep results for <target>\", \"what does Semgrep say about <target>\", or after `semgrep-setup` emits its handoff.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/semgrep-review",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "skill-picker",
+      "description": "Use when you need to browse, index, or install agent skills from a skills catalog into a project's .agents/skills/ folder.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/skill-picker",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "wiki-lint",
+      "description": "Use when checking wiki notes for tier violations, principle violations, empty articles, overly long articles, broken structure, or invalid WikiLinks.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/wiki-lint",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "semgrep-setup",
+      "description": "Install/verify Semgrep CLI and run language, security, and code-quality rulesets against a Python or TypeScript/JavaScript target codebase. Use when the user says \"set up Semgrep on <path>\", \"run Semgrep against <repo>\", or \"scan <target> with Semgrep\".",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/semgrep-setup",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "qlty-setup",
+      "description": "Install/verify the qlty CLI, initialize qlty config if missing, and run smells + check against a Python or TypeScript/JavaScript target codebase. Use when the user says \"set up qlty on <path>\", \"run qlty against <repo>\", or \"scan <target> with qlty\".",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/qlty-setup",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "codeql-setup",
+      "description": "Install/verify CodeQL CLI, build a CodeQL database for a Python or TypeScript/JavaScript target codebase, and run the security-and-quality suite. Use when the user says \"set up CodeQL on <path>\", \"run CodeQL against <repo>\", or \"create a CodeQL database for <target>\".",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/codeql-setup",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "use-obsidian-cli",
+      "description": "Obsidian CLI to manage Obsidian vault content. Use when creating, reading, updating, moving, deleting vault files; creating, updating, deleting or inspecting WikiLinks; finding backlinks, unresolved links, orphans, and dead ends; or searching an Obsidian vault.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/use-obsidian-cli",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "write-a-regex-bash",
+      "description": "Generate a regex for the input that matches requirements and constraints. Use when user asks to write, create, embed, fix or generate a regex for the given string, piece of code, or text. Validation using Bash commands.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/write-a-regex-bash",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "codeql-review",
+      "description": "Read a CodeQL SARIF report from a target codebase and produce a refactor-focused REVIEW.md grouped by DRY / KISS / SOLID / GoF pattern opportunities. Use when the user says \"review the CodeQL results for <target>\", \"what does CodeQL say about <target>\", or after `codeql-setup` emits its handoff.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/codeql-review",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    },
+    {
+      "kind": "skill",
+      "name": "wiki-query",
+      "description": "Use when searching the project wiki, locating relevant notes, traversing WikiLinks, finding backlinks, or answering questions from the Obsidian vault.",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/skills/wiki-query",
+      "files": [
+        "SKILL.md"
+      ],
+      "source_root": ".agents"
+    }
+  ],
+  "agents": [],
+  "rules": [
+    {
+      "kind": "rule",
+      "name": "entry-format",
+      "description": "Required frontmatter format for documentation entries",
+      "path": "/Users/ashkli/Documents/QMO/TA/ta-practice/my-practice/.agents/rules/entry-format.mdc",
+      "files": [],
+      "source_root": ".agents"
+    }
+  ]
+}

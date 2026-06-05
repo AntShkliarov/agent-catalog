@@ -1,4 +1,6 @@
 .venv
-.skill-scan-cache.json
+.agent-catalog.json
 dist
 .agents
+__pycache__/
+*.pyc

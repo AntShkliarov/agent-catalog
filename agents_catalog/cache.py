@@ -5,9 +5,10 @@ from __future__ import annotations
 import json
 from pathlib import Path
 
-from .models import Catalog
+from . import scanner
+from .models import Artifact, Catalog
 
-CACHE_FILENAME = ".skill-scan-cache.json"
+CACHE_FILENAME = ".agent-catalog.json"
 
 
 def cache_path(directory: Path | None = None) -> Path:
@@ -26,3 +27,14 @@ def read_cache(directory: Path | None = None) -> Catalog:
         raise FileNotFoundError(path)
     data = json.loads(path.read_text(encoding="utf-8"))
     return Catalog.from_dict(data)
+
+
+def append_skills(new_skills: list[Artifact], directory: Path | None = None) -> Catalog:
+    """Additively merge new skills into the cache (deduped by absolute path)."""
+    try:
+        catalog = read_cache(directory)
+    except FileNotFoundError:
+        catalog = Catalog(source=str((directory or Path.cwd()).resolve()))
+    catalog.skills = scanner.dedup(catalog.skills + new_skills)
+    write_cache(catalog, directory)
+    return catalog

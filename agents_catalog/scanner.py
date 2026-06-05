@@ -20,6 +20,10 @@ ROOT_RULE_FILES = {".github": ("custom-instructions.md",)}
 # Directories skipped while searching for memory files.
 SKIP_DIRS = {".git", ".venv", "node_modules", "__pycache__", ".obsidian"}
 
+# Patterned skill-collection folder names indexed by the additive index-* commands.
+SKILL_COLLECTION_DIRS = {"skills"}
+PLUGIN_COLLECTION_DIRS = {"claude-plugin", "cursor-plugin"}
+
 
 def _read_text(path: Path) -> str:
     try:
@@ -172,7 +176,24 @@ def _scan_memory_files(target_dir: Path) -> list[Artifact]:
     return rules
 
 
-def _dedup(artifacts: list[Artifact]) -> list[Artifact]:
+def scan_collections(target_dir: Path, folder_names: set[str]) -> list[Artifact]:
+    """Find dirs named in folder_names anywhere under target_dir; index each
+    immediate child <skill>/ that contains SKILL.md."""
+    target_dir = target_dir.resolve()
+    out: list[Artifact] = []
+    for coll in sorted(target_dir.rglob("*")):
+        if not coll.is_dir() or coll.name not in folder_names:
+            continue
+        if any(p in SKIP_DIRS for p in coll.relative_to(target_dir).parts):
+            continue
+        for child in sorted(coll.iterdir()):
+            skill_md = child / SKILL_FILE
+            if child.is_dir() and skill_md.is_file():
+                out.append(_skill_artifact(skill_md, coll.name))
+    return out
+
+
+def dedup(artifacts: list[Artifact]) -> list[Artifact]:
     seen: set[str] = set()
     out: list[Artifact] = []
     for a in artifacts:
@@ -198,7 +219,7 @@ def scan(target_dir: Path) -> Catalog:
 
     catalog.rules.extend(_scan_memory_files(target_dir))
 
-    catalog.skills = _dedup(catalog.skills)
-    catalog.agents = _dedup(catalog.agents)
-    catalog.rules = _dedup(catalog.rules)
+    catalog.skills = dedup(catalog.skills)
+    catalog.agents = dedup(catalog.agents)
+    catalog.rules = dedup(catalog.rules)
     return catalog
