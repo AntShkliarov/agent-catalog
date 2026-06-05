@@ -13,8 +13,11 @@ from rich.table import Table
 from . import cache as cache_mod
 from . import destinations as dest_mod
 from . import scanner
-from .installer import install
+from .installer import CopyResult, install
 from .models import Artifact, Catalog, Kind
+
+# The agent-catalog management skill ships inside the package so the CLI can install it.
+SELF_SKILL_DIR = Path(__file__).resolve().parent / "skills" / "agent-catalog"
 
 app = typer.Typer(
     help="Scan a directory for AI-assistant skills, rules and subagents, then copy selected ones into a project.",
@@ -52,16 +55,16 @@ def init(
     console.print(f"Cache written to [bold]{path}[/bold]")
 
 
-def _index_collections(target_dir: Path, folders: set[str]) -> None:
+def _add_collections(target_dir: Path, folders: set[str]) -> None:
     new = scanner.scan_collections(target_dir, folders)
     catalog = cache_mod.append_skills(new)
     console.print(
-        f"Indexed [bold]{len(new)}[/bold] skill(s); cache now has {len(catalog.skills)} skill(s)."
+        f"Added [bold]{len(new)}[/bold] skill(s); cache now has {len(catalog.skills)} skill(s)."
     )
 
 
-@app.command("index-skills")
-def index_skills(
+@app.command("add-skills")
+def add_skills(
     target_dir: Path = typer.Argument(
         ...,
         exists=True,
@@ -73,11 +76,11 @@ def index_skills(
     ),
 ) -> None:
     """Find skills/<skill> packages under TARGET_DIR and add them to the cache."""
-    _index_collections(target_dir, scanner.SKILL_COLLECTION_DIRS)
+    _add_collections(target_dir, scanner.SKILL_COLLECTION_DIRS)
 
 
-@app.command("index-plugins")
-def index_plugins(
+@app.command("add-plugins")
+def add_plugins(
     target_dir: Path = typer.Argument(
         ...,
         exists=True,
@@ -89,7 +92,7 @@ def index_plugins(
     ),
 ) -> None:
     """Find claude-plugin/<skill> and cursor-plugin/<skill> packages under TARGET_DIR and add them to the cache."""
-    _index_collections(target_dir, scanner.PLUGIN_COLLECTION_DIRS)
+    _add_collections(target_dir, scanner.PLUGIN_COLLECTION_DIRS)
 
 
 def _load_catalog() -> Catalog:
@@ -161,7 +164,10 @@ def _pick(
 
     dest_dir = dest_mod.destination_dir(target, assistant, kind)
     results = install(selected, dest_dir, overwrite=overwrite)
+    _print_results(results)
 
+
+def _print_results(results: list[CopyResult]) -> None:
     for r in results:
         if r.status == "copied":
             console.print(f"[green]copied[/green] {r.artifact.name} -> {r.destination}")
@@ -286,6 +292,41 @@ def pick_rules_filter(
 ) -> None:
     """Pre-filter indexed rules by a term, then select and copy them."""
     _pick("rule", target, assistant, overwrite, term=_resolve_term(term))
+
+
+@app.command("install-skill")
+def install_skill(
+    target: Path = typer.Option(
+        Path.cwd(),
+        "--target",
+        "-t",
+        resolve_path=True,
+        help="Root to install into ('.' for the current workspace, '~' for global).",
+    ),
+    assistant: str = typer.Option(
+        ".cursor", "--assistant", "-a", help="Assistant folder convention to install under."
+    ),
+    overwrite: bool = typer.Option(
+        False, "--overwrite", help="Replace the skill if it already exists at the destination."
+    ),
+) -> None:
+    """Install the bundled agent-catalog management skill into TARGET/<assistant>/skills/."""
+    if assistant not in dest_mod.ASSISTANTS:
+        console.print(f"[red]Unknown assistant '{assistant}'.[/red]")
+        raise typer.Exit(code=1)
+    if not (SELF_SKILL_DIR / "SKILL.md").is_file():
+        console.print(f"[red]Bundled skill not found at {SELF_SKILL_DIR}.[/red]")
+        raise typer.Exit(code=1)
+
+    artifact = Artifact(
+        kind="skill",
+        name=SELF_SKILL_DIR.name,
+        description="agent-catalog management skill",
+        path=str(SELF_SKILL_DIR),
+        source_root="agents_catalog",
+    )
+    dest_dir = dest_mod.destination_dir(target, assistant, "skill")
+    _print_results(install([artifact], dest_dir, overwrite=overwrite))
 
 
 if __name__ == "__main__":

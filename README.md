@@ -27,16 +27,16 @@ Names and descriptions come from YAML frontmatter (`name`, `description`); rules
 uv run agent-catalog init /path/to/source
 ```
 
-### `index-skills <target_dir>` / `index-plugins <target_dir>`
+### `add-skills <target_dir>` / `add-plugins <target_dir>`
 
 Additive scans for patterned skill collections, discovered recursively anywhere under `target_dir`. Each immediate `<skill>/` subfolder containing a `SKILL.md` is indexed and **appended** to the existing `.agent-catalog.json` (deduped by absolute path, so re-runs and overlap with `init` are safe).
 
-- `index-skills` — folders named `skills/` (`skills/<skill>/`).
-- `index-plugins` — folders named `claude-plugin/` and `cursor-plugin/` (`claude-plugin/<skill>/`, `cursor-plugin/<skill>/`).
+- `add-skills` — folders named `skills/` (`skills/<skill>/`).
+- `add-plugins` — folders named `claude-plugin/` and `cursor-plugin/` (`claude-plugin/<skill>/`, `cursor-plugin/<skill>/`).
 
 ```bash
-uv run agent-catalog index-skills /path/to/source
-uv run agent-catalog index-plugins /path/to/source
+uv run agent-catalog add-skills /path/to/source
+uv run agent-catalog add-plugins /path/to/source
 ```
 
 ### `pick-skills` / `pick-agents` / `pick-rules`
@@ -57,6 +57,19 @@ Same as the base pickers, but pre-narrow the catalog by a filter TERM (case-inse
 uv run agent-catalog pick-skills:filter wiki     # only skills whose name contains "wiki"
 uv run agent-catalog pick-rules:filter           # prompts for a filter term
 ```
+
+### `install-skill`
+
+Installs the bundled `agent-catalog` management skill (shipped inside the package at `agents_catalog/skills/agent-catalog/`) into a chosen root. Non-interactive.
+
+```bash
+uv run agent-catalog install-skill --target . --assistant .cursor   # ./.cursor/skills/agent-catalog/
+uv run agent-catalog install-skill --target ~ --assistant .cursor   # ~/.cursor/skills/agent-catalog/ (global)
+```
+
+- `--target, -t` — root to install into (default: cwd; `~` for global).
+- `--assistant, -a` — assistant folder convention (default: `.cursor`).
+- `--overwrite` — refresh an existing copy.
 
 Options (all pick commands):
 
