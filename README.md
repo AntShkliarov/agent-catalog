@@ -1,4 +1,4 @@
-# skill-scan-cli
+# agent-catalog
 
 A Typer CLI that scans a directory for AI-assistant artifacts (skills, rules, subagents), caches them, and lets you interactively copy selected ones into a chosen coding assistant's folder layout.
 

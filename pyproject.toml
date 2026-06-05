@@ -1,5 +1,5 @@
 [project]
-name = "skill-scan-cli"
+name = "agent-catalog-cli"
 version = "0.1.0"
 description = "Scan a directory for AI-assistant skills, rules and subagents and copy selected ones into a chosen assistant's folder layout."
 readme = "README.md"
